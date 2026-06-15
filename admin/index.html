@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1a3a6b">
+  <title>Админ-панель — Колледж</title>
+
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../images/favicon.svg">
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',-apple-system,sans-serif;color:#2c3e50;background:#eef1f6;min-height:100vh}
+    .admin-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .login-card{background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 8px 32px rgba(26,58,107,.16);width:100%;max-width:420px}
+    .login-card h1{text-align:center;color:#1a3a6b;margin-bottom:.5rem;font-size:1.5rem}
+    .spinner{display:inline-block;width:32px;height:32px;border:3px solid #e2e8f0;border-top-color:#1a3a6b;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="admin-body">
+
+  <!-- Login -->
+  <div class="admin-login" id="login-screen">
+    <div class="login-card">
+      <h1>Админ-панель</h1>
+      <p>Войдите для управления сайтом колледжа</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" class="form-control" required placeholder="admin@college.kz">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Пароль</label>
+          <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+        </div>
+        <p class="form-error" id="login-error">Неверный email или пароль</p>
+        <button type="submit" class="btn btn-primary" style="width:100%">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="admin-dashboard" id="dashboard">
+    <header class="admin-header">
+      <div class="container">
+        <h1>Панель управления</h1>
+        <button class="btn btn-outline btn-sm" id="logout-btn">Выйти</button>
+      </div>
+    </header>
+
+    <nav class="admin-nav">
+      <div class="container">
+        <button class="active" data-panel="settings">Настройки</button>
+        <button data-panel="news">Новости</button>
+        <button data-panel="specializations">Специальности</button>
+        <button data-panel="gallery">Галерея</button>
+        <button data-panel="applications">Заявки</button>
+        <button data-panel="comments">Комментарии</button>
+      </div>
+    </nav>
+
+    <main class="admin-content">
+      <div class="container">
+
+        <!-- Settings -->
+        <section class="admin-panel active" id="panel-settings">
+          <h2>Настройки сайта</h2>
+          <div class="admin-card">
+            <form id="settings-form">
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-name">Название колледжа</label>
+                  <input type="text" id="set-name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="set-tagline">Слоган</label>
+                  <input type="text" id="set-tagline" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="set-about">Описание колледжа</label>
+                <textarea id="set-about" class="form-control" rows="4"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="set-logo">URL логотипа</label>
+                <input type="url" id="set-logo" class="form-control" placeholder="https://...">
+              </div>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-founded">Год основания</label>
+                  <input type="number" id="set-founded" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="set-students">Кол-во студентов</label>
+                  <input type="number" id="set-students" class="form-control">
+                </div>
+              </div>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-teachers">Кол-во преподавателей</label>
+                  <input type="number" id="set-teachers" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="set-specs">Кол-во специальностей</label>
+                  <input type="number" id="set-specs" class="form-control">
+                </div>
+              </div>
+              <hr style="margin:1.5rem 0;border:none;border-top:1px solid #e2e8f0">
+              <h3 style="color:#1a3a6b;margin-bottom:1rem;font-size:1.1rem">Контакты</h3>
+              <div class="form-group">
+                <label for="set-address">Адрес</label>
+                <input type="text" id="set-address" class="form-control">
+              </div>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-phone">Телефон</label>
+                  <input type="text" id="set-phone" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="set-email">Email</label>
+                  <input type="email" id="set-email" class="form-control">
+                </div>
+              </div>
+              <h3 style="color:#1a3a6b;margin:1.5rem 0 1rem;font-size:1.1rem">Социальные сети</h3>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-instagram">Instagram</label>
+                  <input type="url" id="set-instagram" class="form-control" placeholder="https://instagram.com/...">
+                </div>
+                <div class="form-group">
+                  <label for="set-facebook">Facebook</label>
+                  <input type="url" id="set-facebook" class="form-control" placeholder="https://facebook.com/...">
+                </div>
+              </div>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="set-telegram">Telegram</label>
+                  <input type="url" id="set-telegram" class="form-control" placeholder="https://t.me/...">
+                </div>
+                <div class="form-group">
+                  <label for="set-youtube">YouTube</label>
+                  <input type="url" id="set-youtube" class="form-control" placeholder="https://youtube.com/...">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top:1rem">Сохранить настройки</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- News -->
+        <section class="admin-panel" id="panel-news">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+            <h2 style="margin:0">Управление новостями</h2>
+            <button class="btn btn-primary btn-sm" id="add-news-btn">+ Добавить новость</button>
+          </div>
+          <div class="admin-card" id="news-list">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+
+        <!-- Specializations -->
+        <section class="admin-panel" id="panel-specializations">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+            <h2 style="margin:0">Управление специальностями</h2>
+            <button class="btn btn-primary btn-sm" id="add-spec-btn">+ Добавить специальность</button>
+          </div>
+          <div class="admin-card" id="specs-list">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="admin-panel" id="panel-gallery">
+          <h2>Управление галереей</h2>
+          <div class="admin-card">
+            <form id="gallery-upload-form">
+              <div class="form-group">
+                <label for="gallery-file">Загрузить фото</label>
+                <input type="file" id="gallery-file" class="form-control" accept="image/*">
+              </div>
+              <div class="form-group">
+                <label for="gallery-caption">Подпись / alt-текст</label>
+                <input type="text" id="gallery-caption" class="form-control" placeholder="Описание фото">
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Загрузить</button>
+            </form>
+          </div>
+          <div class="admin-card">
+            <div class="gallery-admin-grid" id="gallery-admin-grid">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Applications -->
+        <section class="admin-panel" id="panel-applications">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+            <h2 style="margin:0">Заявки на поступление</h2>
+            <button class="btn btn-secondary btn-sm" id="export-csv-btn">Экспорт CSV</button>
+          </div>
+          <div class="admin-card admin-table-wrap">
+            <table class="admin-table" id="applications-table">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>ФИО</th>
+                  <th>Телефон</th>
+                  <th>Email</th>
+                  <th>Специальность</th>
+                  <th>Сообщение</th>
+                  <th>Статус</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="applications-body">
+                <tr><td colspan="8" class="loading"><div class="spinner"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Comments -->
+        <section class="admin-panel" id="panel-comments">
+          <h2>Модерация комментариев</h2>
+          <div class="admin-card" id="comments-admin-list">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Редактирование</h3>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="../js/admin.js" defer></script>
+</body>
+</html>

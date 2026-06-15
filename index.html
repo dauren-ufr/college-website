@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Алматинский Технический Колледж — качественное образование в Казахстане">
+  <meta name="theme-color" content="#1a3a6b">
+  <title>"Высший многопрофильный колледж «Зейнеп»"</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/favicon.svg">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Critical CSS -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px}
+    body{font-family:'Inter',-apple-system,sans-serif;color:#2c3e50;background:#f5f7fa;line-height:1.6}
+    .header{position:sticky;top:0;z-index:1000;background:#fff;box-shadow:0 1px 3px rgba(26,58,107,.08);height:64px}
+    .header .container{display:flex;align-items:center;justify-content:space-between;height:100%;max-width:1200px;margin:0 auto;padding:0 1rem}
+    .hero{min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#1a3a6b,#2a5090);color:#fff;padding:3rem 1rem}
+    .hero h1{font-size:clamp(1.75rem,5vw,3rem);font-weight:800;margin-bottom:1rem}
+    .loading{text-align:center;padding:2rem;color:#6b7c93}
+    .spinner{display:inline-block;width:32px;height:32px;border:3px solid #e2e8f0;border-top-color:#1a3a6b;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#home" class="logo">
+        <img src="images/logo.png" alt="Логотип колледжа" id="site-logo" width="40" height="40">
+        <span id="site-name">"Высший многопрофильный колледж «Зейнеп»"</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="nav" aria-label="Основная навигация">
+        <a href="#home" class="active">Главная</a>
+        <a href="#about">О колледже</a>
+        <a href="#specializations">Специальности</a>
+        <a href="#news">Новости</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#apply">Заявка</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 id="hero-title">ТОО "Высший многопрофильный колледж «Зейнеп»"</h1>
+      <p id="hero-tagline">Качественное образование для вашего будущего</p>
+      <a href="#apply" class="btn btn-primary">Подать заявку</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2 class="section-title">О колледже</h2>
+      <p class="section-subtitle">Узнайте больше о нашей образовательной организации</p>
+      <div class="about-grid">
+        <div class="about-text" id="about-text">
+          <p> ТОО "Высший многопрофильный колледж «Зейнеп»" — современное учебное заведение, готовящее квалифицированных специалистов для экономики Казахстана. Мы предлагаем качественное образование, опытных преподавателей и современную материально-техническую базу.</p>
+        </div>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number" id="stat-founded">после 9 класса</span>
+            <span class="stat-label">База поступления</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="stat-students">1200</span>
+            <span class="stat-label">преимущества</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="stat-teachers">85</span>
+            <span class="stat-label">Преподавателей</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="stat-specs">12</span>
+            <span class="stat-label">Специальностей</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specializations -->
+  <section class="section" id="specializations" style="background:#fff">
+    <div class="container">
+      <h2 class="section-title">Специальности</h2>
+      <p class="section-subtitle">Выберите направление обучения</p>
+      <div class="cards-grid" id="specs-grid">
+        <div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section class="section" id="news">
+    <div class="container">
+      <h2 class="section-title">Новости</h2>
+      <p class="section-subtitle">Последние события и объявления</p>
+      <div class="cards-grid" id="news-grid">
+        <div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>
+      </div>
+      <div class="show-more-wrap hidden" id="news-show-more-wrap">
+        <button class="btn btn-secondary" id="news-show-more">Показать ещё</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="section" id="gallery" style="background:#fff">
+    <div class="container">
+      <h2 class="section-title">Фотогалерея</h2>
+      <p class="section-subtitle">Жизнь нашего колледжа</p>
+      <div class="gallery-grid" id="gallery-grid">
+        <div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comments -->
+  <section class="section" id="comments">
+    <div class="container">
+      <h2 class="section-title">Отзывы</h2>
+      <p class="section-subtitle">Поделитесь своим мнением</p>
+      <form class="comment-form" id="comment-form" novalidate>
+        <div class="form-group">
+          <label for="comment-name">Ваше имя *</label>
+          <input type="text" id="comment-name" class="form-control" required maxlength="100" placeholder="Введите имя">
+          <span class="form-error" id="comment-name-error">Пожалуйста, введите имя</span>
+        </div>
+        <div class="form-group">
+          <label for="comment-text">Комментарий *</label>
+          <textarea id="comment-text" class="form-control" required maxlength="1000" placeholder="Напишите ваш отзыв"></textarea>
+          <span class="form-error" id="comment-text-error">Пожалуйста, введите комментарий</span>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+      <div class="comments-list" id="comments-list">
+        <div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application -->
+  <section class="section apply-section" id="apply">
+    <div class="container">
+      <h2 class="section-title">Подать заявку</h2>
+      <p class="section-subtitle">Заполните форму для поступления</p>
+      <form class="apply-form" id="apply-form" novalidate>
+        <div class="form-group">
+          <label for="apply-name">ФИО *</label>
+          <input type="text" id="apply-name" class="form-control" required maxlength="150" placeholder="Иванов Иван Иванович">
+          <span class="form-error" id="apply-name-error">Введите полное имя</span>
+        </div>
+        <div class="form-group">
+          <label for="apply-phone">Телефон *</label>
+          <input type="tel" id="apply-phone" class="form-control" required placeholder="+7XXXXXXXXXX" inputmode="numeric" maxlength="12">
+          <span class="form-error" id="apply-phone-error">Формат: +7 и 10 цифр (например, +77001234567)</span>
+        </div>
+        <div class="form-group">
+          <label for="apply-email">Email *</label>
+          <input type="email" id="apply-email" class="form-control" required placeholder="example@mail.kz">
+          <span class="form-error" id="apply-email-error">Введите корректный email</span>
+        </div>
+        <div class="form-group">
+          <label for="apply-spec">Специальность *</label>
+          <select id="apply-spec" class="form-control" required>
+            <option value="">Выберите специальность</option>
+          </select>
+          <span class="form-error" id="apply-spec-error">Выберите специальность</span>
+        </div>
+        <div class="form-group">
+          <label for="apply-message">Дополнительная информация</label>
+          <textarea id="apply-message" class="form-control" maxlength="2000" placeholder="Необязательно"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="apply-consent" required>
+            <span>Я согласен(а) на обработку персональных данных *</span>
+          </label>
+          <span class="form-error" id="apply-consent-error">Необходимо согласие</span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Отправить заявку</button>
+      </form>
+      <div class="form-success" id="apply-success">
+        <p>✓ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 id="footer-name">ТОО "Высший многопрофильный колледж «Зейнеп»"</h3>
+          <p id="footer-address">Северо-Казахстанская область, Айыртауский район, село Лобаново, улица Абая, 61</p>
+        </div>
+        <div>
+          <h3>Контакты</h3>
+          <p>Тел: <a href="tel:+77271234567" id="footer-phone">+7 (707) 778-86-99</a></p>
+          <p>Email: <a href="mailto:info@college.kz" id="footer-email">Zeinepcollege@gmail.com</a></p>
+        </div>
+        <div>
+          <h3>Социальные сети</h3>
+          <div class="social-links" id="social-links">
+            <a href="#" aria-label="Instagram" title="Instagram">IG</a>
+            <a href="#" aria-label="Facebook" title="Facebook">FB</a>
+            <a href="#" aria-label="Telegram" title="Telegram">TG</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="footer-year"></span> <span id="footer-copy-name">ТОО "Высший многопрофильный колледж «Зейнеп»"</span>. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Просмотр фото">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Закрыть">&times;</button>
+    <img src="" alt="" id="lightbox-img">
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="js/main.js" defer></script>
+</body>
+</html>
