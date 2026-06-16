@@ -109,6 +109,39 @@ function initNav() {
 
 /* ── Settings ── */
 
+const DEFAULT_LOGO = 'images/favicon.svg';
+
+function getLogoFallbackText(name) {
+  if (!name?.trim()) return 'К';
+  const cleaned = name.trim().replace(/["«»]/g, '');
+  const words = cleaned.split(/\s+/).filter(w => w.length > 1);
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+  return cleaned.slice(0, 2).toUpperCase();
+}
+
+function applySiteLogo(logoUrl, collegeName) {
+  const img = $('site-logo');
+  const fallback = $('logo-fallback');
+  if (!img) return;
+
+  if (fallback) {
+    fallback.textContent = getLogoFallbackText(collegeName || $('site-name')?.textContent);
+  }
+
+  img.onerror = () => {
+    img.style.display = 'none';
+    fallback?.classList.add('visible');
+  };
+
+  img.onload = () => {
+    img.style.display = '';
+    fallback?.classList.remove('visible');
+  };
+
+  const url = logoUrl?.trim();
+  img.src = url || DEFAULT_LOGO;
+}
+
 function renderAboutText(text) {
   const el = $('about-text');
   if (!el) return;
@@ -167,7 +200,7 @@ async function loadSettings() {
       document.title = s.collegeName;
     }
     if (s.tagline) $('hero-tagline').textContent = s.tagline;
-    if (s.logoUrl) $('site-logo').src = s.logoUrl;
+    applySiteLogo(s.logoUrl, s.collegeName);
 
     renderAboutText(s.aboutText);
     renderAboutAdvantages(s.aboutAdvantages);
@@ -578,6 +611,7 @@ $('apply-form').addEventListener('submit', async e => {
 $('footer-year').textContent = new Date().getFullYear();
 
 initNav();
+applySiteLogo('', $('site-name')?.textContent);
 loadSettings();
 loadSpecializations();
 loadNews();
