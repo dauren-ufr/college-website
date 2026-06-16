@@ -110,17 +110,24 @@ function initNav() {
 /* ── Settings ── */
 
 function renderAboutText(text) {
-  if (!text) return;
+  const el = $('about-text');
+  if (!el) return;
+  if (!text?.trim()) {
+    el.innerHTML = '';
+    return;
+  }
   const paragraphs = text.split(/\n+/).map(p => p.trim()).filter(Boolean);
-  $('about-text').innerHTML = paragraphs.length
+  el.innerHTML = paragraphs.length
     ? paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')
     : `<p>${escapeHtml(text)}</p>`;
 }
 
 function renderAboutAdvantages(items) {
-  const grid = $('stats-grid');
-  if (!items?.length) return;
+  const grid = $('about-advantages');
+  if (!grid) return;
   grid.innerHTML = '';
+  if (!Array.isArray(items) || !items.length) return;
+
   items.forEach((label, i) => {
     grid.insertAdjacentHTML('beforeend', `
       <div class="stat-card">
@@ -131,16 +138,19 @@ function renderAboutAdvantages(items) {
   });
 }
 
-function renderAboutExtra(wrapId, textId, text) {
-  const wrap = $(wrapId);
-  const el = $(textId);
+function renderAboutBlock(id, title, text) {
+  const el = $(id);
+  if (!el) return;
   if (!text?.trim()) {
-    wrap.classList.add('hidden');
     el.innerHTML = '';
+    el.classList.add('hidden');
     return;
   }
-  el.innerHTML = escapeHtml(text.trim()).replace(/\n/g, '<br>');
-  wrap.classList.remove('hidden');
+  el.innerHTML = `
+    <h3 class="about-extra-title">${escapeHtml(title)}</h3>
+    <div class="about-extra-text">${escapeHtml(text.trim()).replace(/\n/g, '<br>')}</div>
+  `;
+  el.classList.remove('hidden');
 }
 
 async function loadSettings() {
@@ -157,13 +167,13 @@ async function loadSettings() {
       document.title = s.collegeName;
     }
     if (s.tagline) $('hero-tagline').textContent = s.tagline;
-    if (s.aboutText) renderAboutText(s.aboutText);
     if (s.logoUrl) $('site-logo').src = s.logoUrl;
-    if (Array.isArray(s.aboutAdvantages) && s.aboutAdvantages.length) {
-      renderAboutAdvantages(s.aboutAdvantages);
-    }
-    renderAboutExtra('about-nutrition-wrap', 'about-nutrition', s.aboutNutrition);
-    renderAboutExtra('about-other-wrap', 'about-other', s.aboutOtherInfo);
+
+    renderAboutText(s.aboutText);
+    renderAboutAdvantages(s.aboutAdvantages);
+    renderAboutBlock('about-nutrition', 'Питание', s.aboutNutrition);
+    renderAboutBlock('about-extra', 'Дополнительная информация', s.aboutExtra || s.aboutOtherInfo);
+
     if (s.address) $('footer-address').textContent = s.address;
     if (s.phone) {
       $('footer-phone').textContent = s.phone;

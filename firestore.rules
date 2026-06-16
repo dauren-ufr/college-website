@@ -17,10 +17,12 @@ service cloud.firestore {
         && request.resource.data.likes == 0;
     }
 
-    // Site settings — public read, admin write
+    // Site settings — public read, authenticated admin create/update
     match /settings/{docId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
 
     // News — public read, admin write

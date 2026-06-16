@@ -41,6 +41,17 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function fieldVal(id) {
+  const el = $(id);
+  return el ? el.value.trim() : '';
+}
+
+function fieldLines(id) {
+  const el = $(id);
+  if (!el) return [];
+  return el.value.split('\n').map(line => line.trim()).filter(Boolean);
+}
+
 /* ── Auth ── */
 
 onAuthStateChanged(auth, user => {
@@ -93,58 +104,91 @@ $('modal').addEventListener('click', e => { if (e.target === $('modal')) closeMo
 /* ── Settings ── */
 
 async function loadSettings() {
-  const snap = await getDoc(doc(db, COLLECTIONS.SETTINGS, SETTINGS_DOC_ID));
-  if (!snap.exists()) return;
-  const s = snap.data();
-  $('set-name').value = s.collegeName || '';
-  $('set-tagline').value = s.tagline || '';
-  $('set-about').value = s.aboutText || '';
-  $('set-advantages').value = Array.isArray(s.aboutAdvantages)
-    ? s.aboutAdvantages.join('\n')
-    : (s.aboutAdvantages || '');
-  $('set-nutrition').value = s.aboutNutrition || '';
-  $('set-other-info').value = s.aboutOtherInfo || '';
-  $('set-logo').value = s.logoUrl || '';
-  $('set-address').value = s.address || '';
-  $('set-phone').value = s.phone || '';
-  $('set-email').value = s.email || '';
-  if (s.socials) {
-    $('set-instagram').value = s.socials.instagram || '';
-    $('set-facebook').value = s.socials.facebook || '';
-    $('set-telegram').value = s.socials.telegram || '';
-    $('set-youtube').value = s.socials.youtube || '';
+  try {
+    const snap = await getDoc(doc(db, COLLECTIONS.SETTINGS, SETTINGS_DOC_ID));
+    if (!snap.exists()) return;
+    const s = snap.data();
+    $('set-name').value = s.collegeName || '';
+    $('set-tagline').value = s.tagline || '';
+    $('set-about').value = s.aboutText || '';
+    if ($('set-advantages')) {
+      $('set-advantages').value = Array.isArray(s.aboutAdvantages)
+        ? s.aboutAdvantages.join('\n')
+        : (s.aboutAdvantages || '');
+    }
+    if ($('set-nutrition')) $('set-nutrition').value = s.aboutNutrition || '';
+    if ($('set-other-info')) $('set-other-info').value = s.aboutOtherInfo || '';
+    $('set-logo').value = s.logoUrl || '';
+    $('set-address').value = s.address || '';
+    $('set-phone').value = s.phone || '';
+    $('set-email').value = s.email || '';
+    if (s.socials) {
+      $('set-instagram').value = s.socials.instagram || '';
+      $('set-facebook').value = s.socials.facebook || '';
+      $('set-telegram').value = s.socials.telegram || '';
+      $('set-youtube').value = s.socials.youtube || '';
+    }
+  } catch (err) {
+    console.warn('Settings load failed:', err);
   }
 }
 
 $('settings-form').addEventListener('submit', async e => {
   e.preventDefault();
+
+  if (!auth.currentUser) {
+    showToast('Войдите в систему для сохранения настроек', 'error');
+    return;
+  }
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const btnText = submitBtn ? submitBtn.textContent : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Сохранение...';
+  }
+
   try {
-    await setDoc(doc(db, COLLECTIONS.SETTINGS, SETTINGS_DOC_ID), {
-      collegeName: $('set-name').value.trim(),
-      tagline: $('set-tagline').value.trim(),
-      aboutText: $('set-about').value.trim(),
-      aboutAdvantages: $('set-advantages').value
-        .split('\n')
-        .map(line => line.trim())
-        .filter(Boolean),
-      aboutNutrition: $('set-nutrition').value.trim(),
-      aboutOtherInfo: $('set-other-info').value.trim(),
-      logoUrl: $('set-logo').value.trim(),
-      address: $('set-address').value.trim(),
-      phone: $('set-phone').value.trim(),
-      email: $('set-email').value.trim(),
+    const settingsRef = doc(db, COLLECTIONS.SETTINGS, SETTINGS_DOC_ID);
+    const payload = {
+      collegeName: fieldVal('set-name'),
+      tagline: fieldVal('set-tagline'),
+      aboutText: fieldVal('set-about'),
+      aboutAdvantages: fieldLines('set-advantages'),
+      aboutNutrition: fieldVal('set-nutrition'),
+      aboutOtherInfo: fieldVal('set-other-info'),
+      logoUrl: fieldVal('set-logo'),
+      address: fieldVal('set-address'),
+      phone: fieldVal('set-phone'),
+      email: fieldVal('set-email'),
       socials: {
-        instagram: $('set-instagram').value.trim(),
-        facebook: $('set-facebook').value.trim(),
-        telegram: $('set-telegram').value.trim(),
-        youtube: $('set-youtube').value.trim()
+        instagram: fieldVal('set-instagram'),
+        facebook: fieldVal('set-facebook'),
+        telegram: fieldVal('set-telegram'),
+        youtube: fieldVal('set-youtube')
       },
       updatedAt: serverTimestamp()
-    }, { merge: true });
+    };
+
+    const snap = await getDoc(settingsRef);
+    if (snap.exists()) {
+      await updateDoc(settingsRef, payload);
+    } else {
+      await setDoc(settingsRef, payload);
+    }
+
     showToast('Настройки сохранены');
   } catch (err) {
-    showToast('Ошибка сохранения', 'error');
-    console.warn(err);
+    console.error('Settings save failed:', err.code, err.message, err);
+    const msg = err.code === 'permission-denied'
+      ? 'Нет прав на сохранение. Проверьте вход и правила Firestore.'
+      : `Ошибка сохранения: ${err.message || 'неизвестная ошибка'}`;
+    showToast(msg, 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = btnText || 'Сохранить настройки';
+    }
   }
 });
 
