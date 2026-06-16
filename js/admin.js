@@ -99,11 +99,12 @@ async function loadSettings() {
   $('set-name').value = s.collegeName || '';
   $('set-tagline').value = s.tagline || '';
   $('set-about').value = s.aboutText || '';
+  $('set-advantages').value = Array.isArray(s.aboutAdvantages)
+    ? s.aboutAdvantages.join('\n')
+    : (s.aboutAdvantages || '');
+  $('set-nutrition').value = s.aboutNutrition || '';
+  $('set-other-info').value = s.aboutOtherInfo || '';
   $('set-logo').value = s.logoUrl || '';
-  $('set-founded').value = s.yearFounded || '';
-  $('set-students').value = s.studentCount || '';
-  $('set-teachers').value = s.teacherCount || '';
-  $('set-specs').value = s.specCount || '';
   $('set-address').value = s.address || '';
   $('set-phone').value = s.phone || '';
   $('set-email').value = s.email || '';
@@ -122,11 +123,13 @@ $('settings-form').addEventListener('submit', async e => {
       collegeName: $('set-name').value.trim(),
       tagline: $('set-tagline').value.trim(),
       aboutText: $('set-about').value.trim(),
+      aboutAdvantages: $('set-advantages').value
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean),
+      aboutNutrition: $('set-nutrition').value.trim(),
+      aboutOtherInfo: $('set-other-info').value.trim(),
       logoUrl: $('set-logo').value.trim(),
-      yearFounded: parseInt($('set-founded').value) || 0,
-      studentCount: parseInt($('set-students').value) || 0,
-      teacherCount: parseInt($('set-teachers').value) || 0,
-      specCount: parseInt($('set-specs').value) || 0,
       address: $('set-address').value.trim(),
       phone: $('set-phone').value.trim(),
       email: $('set-email').value.trim(),

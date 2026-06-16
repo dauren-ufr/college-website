@@ -259,6 +259,27 @@ ul { list-style: none; }
   line-height: 1.8;
 }
 
+.about-extra {
+  margin-top: 1.5rem;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  grid-column: 1 / -1;
+}
+
+.about-extra-title {
+  font-size: 1rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.about-extra-text {
+  color: var(--color-text-light);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

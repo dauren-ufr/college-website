@@ -109,6 +109,40 @@ function initNav() {
 
 /* ── Settings ── */
 
+function renderAboutText(text) {
+  if (!text) return;
+  const paragraphs = text.split(/\n+/).map(p => p.trim()).filter(Boolean);
+  $('about-text').innerHTML = paragraphs.length
+    ? paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')
+    : `<p>${escapeHtml(text)}</p>`;
+}
+
+function renderAboutAdvantages(items) {
+  const grid = $('stats-grid');
+  if (!items?.length) return;
+  grid.innerHTML = '';
+  items.forEach((label, i) => {
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="stat-card">
+        <span class="stat-number">${i + 1}</span>
+        <span class="stat-label">${escapeHtml(label)}</span>
+      </div>
+    `);
+  });
+}
+
+function renderAboutExtra(wrapId, textId, text) {
+  const wrap = $(wrapId);
+  const el = $(textId);
+  if (!text?.trim()) {
+    wrap.classList.add('hidden');
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = escapeHtml(text.trim()).replace(/\n/g, '<br>');
+  wrap.classList.remove('hidden');
+}
+
 async function loadSettings() {
   try {
     const snap = await getDoc(doc(db, COLLECTIONS.SETTINGS, SETTINGS_DOC_ID));
@@ -123,12 +157,13 @@ async function loadSettings() {
       document.title = s.collegeName;
     }
     if (s.tagline) $('hero-tagline').textContent = s.tagline;
-    if (s.aboutText) $('about-text').innerHTML = `<p>${escapeHtml(s.aboutText)}</p>`;
+    if (s.aboutText) renderAboutText(s.aboutText);
     if (s.logoUrl) $('site-logo').src = s.logoUrl;
-    if (s.yearFounded) $('stat-founded').textContent = s.yearFounded;
-    if (s.studentCount) $('stat-students').textContent = s.studentCount;
-    if (s.teacherCount) $('stat-teachers').textContent = s.teacherCount;
-    if (s.specCount) $('stat-specs').textContent = s.specCount;
+    if (Array.isArray(s.aboutAdvantages) && s.aboutAdvantages.length) {
+      renderAboutAdvantages(s.aboutAdvantages);
+    }
+    renderAboutExtra('about-nutrition-wrap', 'about-nutrition', s.aboutNutrition);
+    renderAboutExtra('about-other-wrap', 'about-other', s.aboutOtherInfo);
     if (s.address) $('footer-address').textContent = s.address;
     if (s.phone) {
       $('footer-phone').textContent = s.phone;
