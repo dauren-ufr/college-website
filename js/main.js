@@ -109,8 +109,6 @@ function initNav() {
 
 /* ── Settings ── */
 
-const DEFAULT_LOGO = 'images/favicon.svg';
-
 function getLogoFallbackText(name) {
   if (!name?.trim()) return 'К';
   const cleaned = name.trim().replace(/["«»]/g, '');
@@ -139,7 +137,9 @@ function applySiteLogo(logoUrl, collegeName) {
   };
 
   const url = logoUrl?.trim();
-  img.src = url || DEFAULT_LOGO;
+  if (!url) return;
+
+  img.src = url;
 }
 
 function renderAboutText(text) {
