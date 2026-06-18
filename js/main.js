@@ -224,7 +224,7 @@ async function loadSettings() {
 
 function renderSocials(socials) {
   const container = $('social-links');
-  const labels = { instagram: 'IG', facebook: 'FB', telegram: 'TG', youtube: 'YT', whatsapp: 'WA' };
+  const labels = { instagram: 'IG', facebook: 'Wh', telegram: 'TG', youtube: 'YT', whatsapp: 'WA' };
   container.innerHTML = Object.entries(socials)
     .filter(([, url]) => url)
     .map(([key, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" aria-label="${key}" title="${key}">${labels[key] || key}</a>`)
